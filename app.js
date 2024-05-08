@@ -10,5 +10,18 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/api/books', (req, res, next) => {
+    const stuff = [
+        {
+            title: 'Milwaukee Mission',
+            imageUrl: 'https://via.placeholder.com/206x260',
+        },
+        {
+            title: 'Book for Esther',
+            imageUrl: 'https://via.placeholder.com/206x260',
+        },
+    ];
+    res.status(200).json(stuff);
+});
 
 module.exports = app;
