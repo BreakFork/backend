@@ -1,5 +1,12 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
+mongoose.connect('mongodb+srv://HRVB0t0:qupseg-Fobca2-jytfyr@clustertestoc.l6odgrz.mongodb.net/?retryWrites=true&w=majority&appName=ClusterTestOC',
+    { useNewUrlParser: true,
+      useUnifiedTopology: true })
+      .then(() => console.log('MongoDB connection succed !'))
+      .catch(() => console.log('MongoDB connection failed !'))
+
 app.use(express.json()); // Permet de récuopérer le corps de la req en JSON
 
 // CORS 
