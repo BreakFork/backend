@@ -7,11 +7,9 @@ const userRoutes = require('./routes/user');
 
 const app = express();
 
-mongoose.connect(process.env.DB_URI,
-    { useNewUrlParser: true,
-      useUnifiedTopology: true })
-      .then(() => console.log('MongoDB connection succed !'))
-      .catch(() => console.log('MongoDB connection failed !'))
+mongoose.connect(process.env.DB_URI)
+        .then(() => console.log('MongoDB connection succed !'))
+        .catch(() => console.log('MongoDB connection failed !'))
 
 app.use(express.json()); // Permet de récuopérer le corps de la req en JSON
 
@@ -25,6 +23,5 @@ app.use((req, res, next) => {
 
 // Routes URL
 app.use('/api/auth/', userRoutes);
-
 
 module.exports = app;
