@@ -4,6 +4,7 @@ require('dotenv').config();
 
 // Routes declaration
 const userRoutes = require('./routes/user');
+const bookRoutes = require('./routes/book');
 
 const app = express();
 
@@ -23,5 +24,6 @@ app.use((req, res, next) => {
 
 // Routes URL
 app.use('/api/auth/', userRoutes);
+app.use(('/api/book', bookRoutes))
 
 module.exports = app;
