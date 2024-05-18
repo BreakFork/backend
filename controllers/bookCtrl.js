@@ -3,8 +3,22 @@ const Book = require('../models/Book');
 //// CRUD ///////////////////////////////////////////////
 //// Create /////////////////////////////////////////////
 // CREATE ONE BOOK
-exports.createBook = (req, res, next) => {
+exports.createBook = async (req, res, next) => {
+    const bookObject = JSON.parse(req.body.book);
+    
+    delete bookObject._id;
+    delete bookObject._userId;
 
+    const book = new Book({
+        ...bookObject,
+        userId: req.auth.userId,
+        ratings: [],
+        averageRating : 0,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    })
+    await book.save()
+        .then(() => res.status(201).json({ message: 'A new book was created !' }))
+        .catch(error => res.status(400).json({ error }))
 };
 
 
@@ -13,12 +27,12 @@ exports.createBook = (req, res, next) => {
 exports.getAllBooks = (req, res, next) => {
     Book.find()
         .then((books) => res.status(200).json(books))
-        .catch(error => res.status(400).json({ error }))
+        .catch(error => res.status(404).json({ error }))
 };
 
 // GET ONE BOOK
 exports.getOneBook = (req, res, next) => {
-    Book.findOne({ _id: req.param.id })
+    Book.findOne({ _id: req.params.id })
         .then((book) => res.status(200).json(book))
         .catch(error => res.status(404).json({ error }))
 };

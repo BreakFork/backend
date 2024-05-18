@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: ".env" });
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
         const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
         const userId = decodedToken.userId;
         req.auth = {
-            userId : userId
+            userId: userId
         };
         next();
     } catch(error) {
