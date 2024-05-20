@@ -1,4 +1,5 @@
 const Book = require('../models/Book');
+const fs = require('fs');
 
 //// CRUD ///////////////////////////////////////////////
 //// Create /////////////////////////////////////////////
@@ -12,8 +13,6 @@ exports.createBook = async (req, res, next) => {
     const book = new Book({
         ...bookObject,
         userId: req.auth.userId,
-        ratings: [],
-        averageRating : 0,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     })
     await book.save()
@@ -32,8 +31,10 @@ exports.getAllBooks = (req, res, next) => {
 
 // GET ONE BOOK
 exports.getOneBook = (req, res, next) => {
+    console.log(req.params.id)
+    // const bookId = req.params.id;
     Book.findOne({ _id: req.params.id })
-        .then((book) => res.status(200).json(book))
+        .then(book => res.status(200).json(book))
         .catch(error => res.status(404).json({ error }))
 };
 
