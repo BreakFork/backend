@@ -6,7 +6,9 @@ const storage = multer.diskStorage({
     },
     filename : (req, file, callback) => {
         const name = file.originalname.split(' ').join('_')
-        callback(null, name + Date.now() + '.webp')
+        const pattern = (/\.png|\.jpeg|\.jpg/).exec(name)
+        const newName = name.replace(pattern[0], "")
+        callback(null, newName + Date.now() + '.webp')
     }
 })
 
