@@ -10,13 +10,22 @@ const bookRoutes = require('./routes/book');
 
 const app = express();
 
-// CORS 
-app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Origin', 'X-Requested-With', 'Content', 'Accept', 'Content-Type', 'Authorization'],
-    credentials: true
-}));
+var whitelist = ['http://localhost:3000', 'http://www.localhost:3000'];
+var corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(null, false);
+        }
+    },
+    methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+    optionsSuccessStatus: 200,
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'device-remember-token', 'Access-Control-Allow-Origin', 'Origin', 'Accept', 'x-access-token']
+};
+
+app.use(cors(corsOptions));
 
 mongoose.connect(process.env.DB_URI)
         .then(() => console.log('MongoDB connection succed !'))
