@@ -3,10 +3,15 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config({ path: ".env" });
 const User = require('../models/User');
 const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const passwordRegex = /^(?=.*\d).{8,}$/;
 
 exports.signup = (req, res, next) => {
     if (!emailRegex.test(req.body.email)) {
         return res.status(401).json({ message: 'Invalid email format !' }) 
+    }
+
+    if (!passwordRegex.test(req.body.password)) {
+        return res.status(401).json({ message: 'Invalid password format !' })
     }
 
     bcrypt.hash(req.body.password, 10)
